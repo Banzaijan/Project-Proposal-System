@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tracker — StudyMate</title>
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="sidebar-logo" style="display:flex;align-items:center;gap:12px;padding:0 8px;margin-bottom:32px;">
+    <div style="background:#6366f1;width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+        <rect x="2" y="3" width="8" height="18" rx="1.5" fill="rgba(255,255,255,0.3)"/>
+        <rect x="14" y="3" width="8" height="18" rx="1.5" fill="rgba(255,255,255,0.3)"/>
+        <rect x="9.5" y="3" width="5" height="18" rx="1" fill="rgba(255,255,255,0.6)"/>
+        <circle cx="20" cy="17" r="4" fill="white"/>
+        <polyline points="18,17 19.5,18.5 22,16" stroke="#6366f1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div>
+      <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:800;background:linear-gradient(135deg,#5b8af5,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">StudyMate</div>
+      <div style="font-size:11px;color:#7a869e;">Academic Companion</div>
+    </div>
+  </div>
+
+  <nav>
+    <div style="font-size:11px;color:#7a869e;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:0 12px;margin-bottom:8px;">Main</div>
+    <a class="nav-item" href="dashboard.html">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      Dashboard
+    </a>
+    <a class="nav-item" href="tasks.html">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+      Tasks
+    </a>
+    <a class="nav-item" href="reminders.html">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+      Reminders
+    </a>
+
+    <div style="font-size:11px;color:#7a869e;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:0 12px;margin:16px 0 8px;">Analytics</div>
+    <a class="nav-item active" href="tracker.html">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      Tracker
+    </a>
+    <a class="nav-item" href="focus.html">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      Focus Mode
+    </a>
+
+    <div style="font-size:11px;color:#7a869e;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:0 12px;margin:16px 0 8px;">Account</div>
+    <a class="nav-item" href="profile.html">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      Profile
+    </a>
+    <a class="nav-item" href="grades.html">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+      Grades
+    </a>
+    <a class="nav-item" href="schedule.html">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      Schedule
+    </a>
+    <a class="nav-item" href="notifications.html">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+      Notifications
+    </a>
+  </nav>
+
+  <div class="sidebar-bottom">
+    <div class="user-chip">
+      <div class="avatar" id="user-avatar">?</div>
+      <span class="user-name" id="user-name-display">Loading...</span>
+      <button class="logout-btn" onclick="doLogout()" title="Logout">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      </button>
+    </div>
+  </div>
+</aside>
+
+<main class="main">
+  <div class="page-header">
+    <div class="page-title">Productivity Tracker</div>
+    <div class="page-sub">Monitor your academic performance over time.</div>
+  </div>
+
+  <div class="tracker-grid">
+    <div class="tracker-card">
+      <div class="tracker-card-title">Completion Rate</div>
+      <div class="donut-wrap">
+        <div class="donut">
+          <svg width="120" height="120" viewBox="0 0 120 120">
+            <circle cx="60" cy="60" r="48" fill="none" stroke="#1e2330" stroke-width="14"/>
+            <circle cx="60" cy="60" r="48" fill="none" stroke="url(#grad)" stroke-width="14"
+              stroke-linecap="round" id="donut-circle"
+              stroke-dasharray="301.6" stroke-dashoffset="301.6"/>
+            <defs>
+              <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%"   stop-color="#5b8af5"/>
+                <stop offset="100%" stop-color="#a78bfa"/>
+              </linearGradient>
+            </defs>
+          </svg>
+          <div class="donut-center">
+            <div class="donut-pct" id="donut-pct">0%</div>
+            <div class="donut-sub">done</div>
+          </div>
+        </div>
+        <div class="donut-legend">
+          <div class="legend-item">
+            <div class="legend-dot" style="background:var(--accent)"></div>
+            <span id="legend-done">0 Completed</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-dot" style="background:var(--surface2);border:1px solid var(--border)"></div>
+            <span id="legend-pending">0 Pending</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-dot" style="background:var(--danger)"></div>
+            <span id="legend-overdue">0 Overdue</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tracker-card">
+      <div class="tracker-card-title">Tasks by Priority</div>
+      <div id="priority-bars">
+        <p style="color:var(--muted);font-size:13px">Loading...</p>
+      </div>
+    </div>
+
+    <div class="tracker-card">
+      <div class="tracker-card-title">Tasks by Subject</div>
+      <div id="subject-bars">
+        <p style="color:var(--muted);font-size:13px">Loading...</p>
+      </div>
+    </div>
+
+    <div class="tracker-card">
+      <div class="tracker-card-title">Tasks Added This Week</div>
+      <div class="weekly-grid" id="weekly-grid"></div>
+    </div>
+  </div>
+</main>
+
+<script type="module">
+  import { requireAuth } from './js/auth.js';
+  import './js/auth.js';
+  import { listenTasks } from './js/tasks.js';
+  import { renderTracker } from './js/tracker.js';
+
+  requireAuth((user) => {
+    listenTasks(user.uid, (tasks) => {
+      renderTracker(tasks);
+    });
+  });
+</script>
+</body>
+</html>

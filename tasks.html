@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tasks — StudyMate</title>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+    :root{--bg:#0d0f14;--surface:#151820;--surface2:#1c2030;--border:rgba(255,255,255,0.07);--text:#e8eaf0;--muted:#6b7280;--accent:#6366f1;--green:#22c55e;--red:#ef4444;--yellow:#f59e0b;--purple:#a855f7;}
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;display:flex;min-height:100vh;}
+    .sidebar{width:230px;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:1.5rem 1rem;position:fixed;top:0;left:0;height:100vh;z-index:100;}
+    .sidebar-logo{display:flex;align-items:center;gap:0.6rem;margin-bottom:2rem;padding:0 0.5rem;}
+    .logo-icon{width:34px;height:34px;background:var(--accent);border-radius:10px;display:flex;align-items:center;justify-content:center;}
+    .logo-icon svg{width:18px;height:18px;stroke:#fff;stroke-width:2.5;}
+    .logo-text{font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;color:#fff;}
+    .logo-sub{font-size:0.65rem;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-top:1px;}
+    .nav-section-label{font-size:0.68rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);padding:0 0.75rem;margin:1.2rem 0 0.4rem;}
+    .nav-item{display:flex;align-items:center;gap:0.65rem;padding:0.6rem 0.75rem;border-radius:8px;color:var(--muted);text-decoration:none;font-size:0.875rem;transition:all 0.15s;margin-bottom:0.1rem;position:relative;}
+    .nav-item svg{width:16px;height:16px;stroke:currentColor;stroke-width:2;flex-shrink:0;}
+    .nav-item:hover{background:var(--surface2);color:var(--text);}
+    .nav-item.active{background:rgba(99,102,241,0.12);color:var(--accent);font-weight:500;}
+    .nav-item.active::before{content:'';position:absolute;left:0;top:20%;bottom:20%;width:3px;background:var(--accent);border-radius:0 3px 3px 0;}
+    .sidebar-bottom{margin-top:auto;}
+    .user-chip{display:flex;align-items:center;gap:0.6rem;padding:0.75rem;background:var(--surface2);border-radius:10px;border:1px solid var(--border);}
+    .avatar{width:32px;height:32px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.8rem;flex-shrink:0;color:#fff;}
+    .user-info{flex:1;min-width:0;}
+    .user-name{font-size:0.82rem;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+    .user-role{font-size:0.68rem;color:var(--muted);}
+    .logout-btn{background:none;border:none;color:var(--muted);cursor:pointer;padding:4px;border-radius:6px;display:flex;align-items:center;}
+    .logout-btn:hover{color:var(--red);}
+    .logout-btn svg{width:15px;height:15px;stroke:currentColor;stroke-width:2;}
+    .main{margin-left:230px;flex:1;padding:2rem;overflow-y:auto;}
+    .page-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:2rem;}
+    .page-title{font-family:'Syne',sans-serif;font-size:1.75rem;font-weight:800;}
+    .btn-add{background:var(--accent);color:#fff;border:none;border-radius:10px;padding:0.55rem 1.25rem;font-size:0.88rem;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600;display:flex;align-items:center;gap:0.4rem;}
+    .btn-add svg{width:14px;height:14px;stroke:#fff;stroke-width:2.5;}
+    .filter-row{display:flex;gap:0.5rem;margin-bottom:1.5rem;flex-wrap:wrap;}
+    .tab{padding:0.35rem 0.9rem;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:0.8rem;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;}
+    .tab:hover{color:var(--text);}
+    .tab.active{background:var(--accent);border-color:var(--accent);color:#fff;}
+    .subject-group{margin-bottom:2rem;}
+    .subject-group-header{display:flex;align-items:center;gap:0.75rem;margin-bottom:0.75rem;padding-bottom:0.5rem;border-bottom:1px solid var(--border);}
+    .subject-group-dot{width:10px;height:10px;border-radius:50%;background:var(--dot-color,var(--accent));flex-shrink:0;}
+    .subject-group-name{font-family:'Syne',sans-serif;font-weight:700;font-size:0.95rem;}
+    .subject-group-count{font-size:0.74rem;color:var(--muted);margin-left:auto;}
+    .type-section{margin-bottom:1rem;}
+    .type-label{font-size:0.7rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:0.5rem;display:flex;align-items:center;gap:0.4rem;}
+    .type-label svg{width:13px;height:13px;stroke:currentColor;stroke-width:2;}
+    .task-card{display:flex;align-items:center;gap:0.75rem;padding:0.75rem 1rem;border-radius:10px;background:var(--surface);border:1px solid var(--border);margin-bottom:0.4rem;transition:all 0.2s;}
+    .task-card:hover{border-color:rgba(255,255,255,0.13);}
+    .task-card.done-card{opacity:0.45;}
+    .check{width:20px;height:20px;border-radius:50%;border:2px solid var(--border);flex-shrink:0;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;}
+    .check:hover{border-color:var(--accent);}
+    .check.checked{background:var(--green);border-color:var(--green);}
+    .check.checked::after{content:'✓';font-size:0.65rem;color:#fff;font-weight:700;}
+    .task-info{flex:1;min-width:0;}
+    .task-name{font-size:0.88rem;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .task-name.struck{text-decoration:line-through;color:var(--muted);}
+    .task-due{font-size:0.73rem;color:var(--muted);margin-top:0.15rem;}
+    .task-due.overdue{color:var(--red);}
+    .task-due.today{color:var(--yellow);}
+    .prio-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+    .del-btn{background:none;border:none;color:var(--muted);cursor:pointer;padding:4px;display:flex;align-items:center;transition:color 0.2s;}
+    .del-btn:hover{color:var(--red);}
+    .del-btn svg{width:14px;height:14px;stroke:currentColor;stroke-width:2;}
+    .empty{text-align:center;padding:2rem;color:var(--muted);font-size:0.85rem;}
+    .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);display:none;align-items:center;justify-content:center;z-index:200;backdrop-filter:blur(4px);}
+    .modal{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:2rem;width:420px;max-width:90vw;}
+    .modal-title{font-family:'Syne',sans-serif;font-weight:700;font-size:1.05rem;margin-bottom:1.5rem;}
+    .field{margin-bottom:1rem;}
+    .field label{display:block;font-size:0.77rem;color:var(--muted);margin-bottom:0.35rem;}
+    .field input,.field select{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:0.6rem 0.75rem;color:var(--text);font-family:'DM Sans',sans-serif;font-size:0.88rem;outline:none;transition:border-color 0.2s;}
+    .field input:focus,.field select:focus{border-color:var(--accent);}
+    .modal-actions{display:flex;gap:0.75rem;justify-content:flex-end;margin-top:1.5rem;}
+    .btn-cancel{background:var(--surface2);color:var(--muted);border:none;border-radius:8px;padding:0.6rem 1.2rem;cursor:pointer;font-family:'DM Sans',sans-serif;}
+    .btn-save{background:var(--accent);color:#fff;border:none;border-radius:8px;padding:0.6rem 1.2rem;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600;}
+    .notif{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:0.75rem 1.25rem;font-size:0.88rem;z-index:999;animation:slideUp 0.3s ease;}
+    @keyframes slideUp{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+    @media(max-width:600px){.sidebar{display:none;}.main{margin-left:0;}}
+  </style>
+</head>
+<body>
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
+    <div><div class="logo-text">StudyMate</div><div class="logo-sub">Academic Companion</div></div>
+  </div>
+  <div class="nav-section-label">Main</div>
+  <nav>
+    <a class="nav-item" href="dashboard.html"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Dashboard</a>
+    <a class="nav-item active" href="tasks.html"><svg viewBox="0 0 24 24" fill="none"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>Tasks</a>
+    <a class="nav-item" href="reminders.html"><svg viewBox="0 0 24 24" fill="none"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>Reminders</a>
+    <div class="nav-section-label" style="margin-top:1rem;">Analytics</div>
+    <a class="nav-item" href="tracker.html"><svg viewBox="0 0 24 24" fill="none"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Tracker</a>
+    <a class="nav-item" href="focus.html"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Focus Mode</a>
+  </nav>
+  <div class="sidebar-bottom">
+    <div class="user-chip">
+      <div class="avatar" id="user-avatar">?</div>
+      <div class="user-info"><div class="user-name" id="user-name-display">Loading...</div><div class="user-role">Student</div></div>
+      <button class="logout-btn" onclick="doLogout()" title="Sign Out"><svg viewBox="0 0 24 24" fill="none"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button>
+    </div>
+  </div>
+</aside>
+
+<main class="main">
+  <div class="page-header">
+    <div class="page-title">Tasks</div>
+    <button class="btn-add" onclick="document.getElementById('task-modal').style.display='flex'">
+      <svg viewBox="0 0 24 24" fill="none"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Add Task
+    </button>
+  </div>
+  <div class="filter-row">
+    <button class="tab active" onclick="setFilter('pending',this)">Pending</button>
+    <button class="tab" onclick="setFilter('all',this)">All</button>
+    <button class="tab" onclick="setFilter('done',this)">Done</button>
+    <button class="tab" onclick="setFilter('exam',this)">Exams</button>
+    <button class="tab" onclick="setFilter('high',this)">High Priority</button>
+  </div>
+  <div id="tasks-container">
+    <div class="empty">No tasks yet. Add one!</div>
+  </div>
+</main>
+
+<div class="modal-overlay" id="task-modal" onclick="if(event.target.id==='task-modal') this.style.display='none'">
+  <div class="modal">
+    <div class="modal-title">Add New Task</div>
+    <div class="field"><label>Task Title</label><input type="text" id="t-title" placeholder="e.g. Research paper"/></div>
+    <div class="field"><label>Subject</label><input type="text" id="t-subject" placeholder="e.g. Math"/></div>
+    <div class="field"><label>Type</label>
+      <select id="t-type"><option value="assignment">Assignment</option><option value="exam">Exam / Quiz</option><option value="activity">Activity</option><option value="project">Project</option></select></div>
+    <div class="field"><label>Due Date</label><input type="date" id="t-due"/></div>
+    <div class="field"><label>Priority</label>
+      <select id="t-priority"><option value="high">High</option><option value="medium" selected>Medium</option><option value="low">Low</option></select></div>
+    <div class="field"><label>Notes (optional)</label><input type="text" id="t-notes" placeholder="Any extra info..."/></div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="document.getElementById('task-modal').style.display='none'">Cancel</button>
+      <button class="btn-save" onclick="handleSave()">Save Task</button>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  import { requireAuth } from './js/auth.js';
+  import './js/auth.js';
+  import { listenTasks, addTask, toggleTask, deleteTask } from './js/tasks.js';
+
+  window.addEventListener('load', () => lucide.createIcons());
+
+  let allTasks = [];
+  let currentFilter = 'pending';
+  const COLORS = ['#6366f1','#22d3ee','#f59e0b','#22c55e','#a855f7','#ef4444','#f97316','#ec4899'];
+  const prioColors = { high:'#ef4444', medium:'#f59e0b', low:'#22c55e' };
+
+  window.setFilter = (f, btn) => {
+    currentFilter = f;
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    render();
+  };
+
+  requireAuth((user) => {
+    listenTasks(user.uid, (tasks) => { allTasks = tasks; render(); });
+
+    window.handleToggle = async (id, done) => await toggleTask(id, done);
+    window.handleDelete = async (id) => {
+      if (!confirm('Delete this task?')) return;
+      await deleteTask(id);
+      showNotif('Task deleted.');
+    };
+    window.handleSave = async () => {
+      try {
+        await addTask(user.uid, {
+          title: document.getElementById('t-title').value,
+          subject: document.getElementById('t-subject').value,
+          type: document.getElementById('t-type').value,
+          due: document.getElementById('t-due').value,
+          priority: document.getElementById('t-priority').value,
+          notes: document.getElementById('t-notes').value,
+        });
+        document.getElementById('task-modal').style.display = 'none';
+        ['t-title','t-subject','t-notes'].forEach(id => document.getElementById(id).value='');
+        showNotif('Task added!');
+      } catch(e) { showNotif('Error: '+e.message); }
+    };
+  });
+
+  function render() {
+    const container = document.getElementById('tasks-container');
+    let filtered = allTasks;
+    if (currentFilter==='pending') filtered = allTasks.filter(t=>!t.done);
+    else if (currentFilter==='done') filtered = allTasks.filter(t=>t.done);
+    else if (currentFilter==='exam') filtered = allTasks.filter(t=>t.type==='exam');
+    else if (currentFilter==='high') filtered = allTasks.filter(t=>t.priority==='high'&&!t.done);
+    if (!filtered.length) { container.innerHTML='<div class="empty">No tasks here!</div>'; return; }
+
+    const bySubject = {};
+    filtered.forEach(t => { const s=t.subject||'General'; if(!bySubject[s]) bySubject[s]=[]; bySubject[s].push(t); });
+
+    container.innerHTML = Object.keys(bySubject).sort().map((subj,si) => {
+      const tasks = bySubject[subj];
+      const color = COLORS[si%COLORS.length];
+      const byType = {};
+      tasks.forEach(t => { const tp=t.type||'assignment'; if(!byType[tp]) byType[tp]=[]; byType[tp].push(t); });
+      const typeInfo = {
+        exam:       { label:'Exams & Quizzes',  icon:'<svg viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>' },
+        project:    { label:'Projects',          icon:'<svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 010 14.14M4.93 4.93a10 10 0 000 14.14"/></svg>' },
+        activity:   { label:'Activities',        icon:'<svg viewBox="0 0 24 24" fill="none"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>' },
+        assignment: { label:'Assignments',       icon:'<svg viewBox="0 0 24 24" fill="none"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>' },
+      };
+      const typeSections = ['exam','project','activity','assignment']
+        .filter(tp => byType[tp])
+        .map(tp => {
+          const info = typeInfo[tp];
+          const cards = byType[tp].sort((a,b)=>new Date(a.due||'9999')-new Date(b.due||'9999'));
+          return `<div class="type-section">
+            <div class="type-label">${info.icon} ${info.label}</div>
+            ${cards.map(t => taskCard(t)).join('')}
+          </div>`;
+        }).join('');
+
+      return `<div class="subject-group">
+        <div class="subject-group-header">
+          <div class="subject-group-dot" style="--dot-color:${color}"></div>
+          <div class="subject-group-name">${subj}</div>
+          <div class="subject-group-count">${tasks.length} task${tasks.length>1?'s':''}</div>
+        </div>
+        ${typeSections}
+      </div>`;
+    }).join('');
+  }
+
+  function taskCard(t) {
+    const now=new Date(); now.setHours(0,0,0,0);
+    const due=t.due?new Date(t.due):null;
+    const diff=due?Math.round((due-now)/86400000):null;
+    let dueClass='', dueText=due?due.toLocaleDateString('en-PH',{month:'short',day:'numeric'}):'No deadline';
+    if(diff!==null){
+      if(diff<0){dueClass='overdue';dueText=`Overdue (${Math.abs(diff)}d ago)`;}
+      else if(diff===0){dueClass='today';dueText='Due today!';}
+    }
+    return `<div class="task-card ${t.done?'done-card':''}">
+      <div class="check ${t.done?'checked':''}" onclick="handleToggle('${t.id}',${!t.done})"></div>
+      <div class="task-info">
+        <div class="task-name ${t.done?'struck':''}">${t.title}</div>
+        <div class="task-due ${dueClass}">${dueText}</div>
+      </div>
+      <div class="prio-dot" style="background:${prioColors[t.priority||'medium']}"></div>
+      <button class="del-btn" onclick="handleDelete('${t.id}')">
+        <svg viewBox="0 0 24 24" fill="none"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>
+      </button>
+    </div>`;
+  }
+
+  function showNotif(msg) {
+    const n=document.createElement('div'); n.className='notif'; n.textContent=msg;
+    document.body.appendChild(n); setTimeout(()=>n.remove(),3000);
+  }
+</script>
+</body>

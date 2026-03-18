@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>StudyMate — Login</title>
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+
+<div class="auth-screen">
+  <div class="auth-box">
+
+    <!-- Logo -->
+    <div style="display:flex; align-items:center; gap:12px; margin-bottom:6px;">
+      <div style="background:#6366f1; width:42px; height:42px; border-radius:12px; display:flex; align-items:center; justify-content:center; flex-shrink:0; box-shadow:0 4px 16px rgba(99,102,241,0.35);">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <rect x="2" y="3" width="8" height="18" rx="1.5" fill="rgba(255,255,255,0.3)"/>
+          <rect x="14" y="3" width="8" height="18" rx="1.5" fill="rgba(255,255,255,0.3)"/>
+          <rect x="9.5" y="3" width="5" height="18" rx="1" fill="rgba(255,255,255,0.6)"/>
+          <circle cx="20" cy="17" r="4" fill="white"/>
+          <polyline points="18,17 19.5,18.5 22,16" stroke="#6366f1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div>
+        <div class="auth-logo" style="margin-bottom:0;">StudyMate</div>
+        <div class="auth-tagline" style="margin-bottom:0;">Your smart academic companion</div>
+      </div>
+    </div>
+
+    <div style="margin-bottom:36px;"></div>
+
+    <div class="auth-tabs">
+      <button class="auth-tab active" onclick="switchTab('login')">Login</button>
+      <button class="auth-tab" onclick="switchTab('register')">Register</button>
+    </div>
+
+    <!-- Login Form -->
+    <div id="login-form">
+      <div class="field">
+        <label>Email</label>
+        <input type="email" id="login-email" placeholder="you@school.edu"/>
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input type="password" id="login-pass" placeholder="••••••••"
+               onkeydown="if(event.key==='Enter') doLogin()"/>
+      </div>
+      <button class="btn-primary" onclick="doLogin()">Login →</button>
+    </div>
+
+    <!-- Register Form -->
+    <div id="register-form" style="display:none">
+      <div class="field">
+        <label>Full Name</label>
+        <input type="text" id="reg-name" placeholder="Juan Dela Cruz"/>
+      </div>
+      <div class="field">
+        <label>Email</label>
+        <input type="email" id="reg-email" placeholder="you@school.edu"/>
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input type="password" id="reg-pass" placeholder="min. 6 characters"
+               onkeydown="if(event.key==='Enter') doRegister()"/>
+      </div>
+      <button class="btn-primary" onclick="doRegister()">Create Account →</button>
+    </div>
+
+    <div class="auth-error" id="auth-error"></div>
+  </div>
+</div>
+
+<script type="module">
+  import { redirectIfLoggedIn } from './js/auth.js';
+  import './js/auth.js';
+  redirectIfLoggedIn();
+</script>
+</body>
+</html>

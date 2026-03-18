@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Notifications — StudyMate</title>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--bg:#0d0f14;--surface:#151820;--surface2:#1c2030;--border:rgba(255,255,255,0.07);--text:#e8eaf0;--muted:#6b7280;--accent:#6366f1;--green:#22c55e;--red:#ef4444;--yellow:#f59e0b;--purple:#a855f7;}
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;display:flex;min-height:100vh;}
+    .sidebar{width:230px;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:1.5rem 1rem;position:fixed;top:0;left:0;height:100vh;z-index:100;overflow-y:auto;}
+    .sidebar-logo{display:flex;align-items:center;gap:0.6rem;margin-bottom:2rem;padding:0 0.5rem;}
+    .logo-icon{width:38px;height:38px;background:var(--accent);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+    .logo-text{font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;color:#fff;}
+    .logo-sub{font-size:0.65rem;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-top:1px;}
+    .nav-section-label{font-size:0.68rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);padding:0 0.75rem;margin:1.2rem 0 0.4rem;}
+    .nav-item{display:flex;align-items:center;gap:0.65rem;padding:0.6rem 0.75rem;border-radius:8px;color:var(--muted);text-decoration:none;font-size:0.875rem;transition:all 0.15s;margin-bottom:0.1rem;position:relative;}
+    .nav-item svg{width:16px;height:16px;stroke:currentColor;stroke-width:2;flex-shrink:0;}
+    .nav-item:hover{background:var(--surface2);color:var(--text);}
+    .nav-item.active{background:rgba(99,102,241,0.12);color:var(--accent);font-weight:500;}
+    .nav-item.active::before{content:'';position:absolute;left:0;top:20%;bottom:20%;width:3px;background:var(--accent);border-radius:0 3px 3px 0;}
+    .sidebar-bottom{margin-top:auto;padding-top:1rem;}
+    .user-chip{display:flex;align-items:center;gap:0.6rem;padding:0.75rem;background:var(--surface2);border-radius:10px;border:1px solid var(--border);}
+    .avatar{width:32px;height:32px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.8rem;flex-shrink:0;color:#fff;}
+    .user-info{flex:1;min-width:0;}
+    .user-name{font-size:0.82rem;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+    .user-role{font-size:0.68rem;color:var(--muted);}
+    .logout-btn{background:none;border:none;color:var(--muted);cursor:pointer;padding:4px;display:flex;align-items:center;}
+    .logout-btn:hover{color:var(--red);}
+    .logout-btn svg{width:15px;height:15px;stroke:currentColor;stroke-width:2;}
+    .main{margin-left:230px;flex:1;padding:2rem;overflow-y:auto;max-width:700px;}
+    .page-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:2rem;}
+    .page-title{font-family:'Syne',sans-serif;font-size:1.75rem;font-weight:800;}
+    .btn-clear{background:var(--surface2);color:var(--muted);border:1px solid var(--border);border-radius:8px;padding:0.4rem 1rem;font-size:0.82rem;cursor:pointer;font-family:'DM Sans',sans-serif;}
+    .btn-clear:hover{color:var(--red);border-color:rgba(239,68,68,0.3);}
+    .notif-item{display:flex;align-items:flex-start;gap:1rem;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1rem 1.25rem;transition:all 0.2s;cursor:pointer;position:relative;margin-bottom:0.6rem;}
+    .notif-item:hover{border-color:rgba(255,255,255,0.12);}
+    .notif-item.unread{border-left:3px solid var(--accent);}
+    .notif-item.unread::after{content:'';position:absolute;top:1rem;right:1rem;width:7px;height:7px;border-radius:50%;background:var(--accent);}
+    .notif-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+    .notif-icon svg{width:17px;height:17px;stroke:currentColor;stroke-width:2;}
+    .notif-body{flex:1;min-width:0;}
+    .notif-title{font-size:0.88rem;font-weight:500;margin-bottom:0.2rem;}
+    .notif-desc{font-size:0.8rem;color:var(--muted);line-height:1.4;}
+    .notif-time{font-size:0.7rem;color:var(--muted);margin-top:0.3rem;}
+    .section-date{font-size:0.72rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin:1.25rem 0 0.75rem;}
+    .empty{text-align:center;padding:3rem;color:var(--muted);font-size:0.88rem;}
+    @media(max-width:600px){.sidebar{display:none;}.main{margin-left:0;}}
+  </style>
+</head>
+<body>
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="2" y="3" width="8" height="18" rx="1.5" fill="rgba(255,255,255,0.3)"/><rect x="14" y="3" width="8" height="18" rx="1.5" fill="rgba(255,255,255,0.3)"/><rect x="9.5" y="3" width="5" height="18" rx="1" fill="rgba(255,255,255,0.6)"/><circle cx="20" cy="17" r="4" fill="white"/><polyline points="18,17 19.5,18.5 22,16" stroke="#6366f1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div><div class="logo-text">StudyMate</div><div class="logo-sub">Academic Companion</div></div>
+  </div>
+  <div class="nav-section-label">Main</div>
+  <nav>
+    <a class="nav-item" href="dashboard.html"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Dashboard</a>
+    <a class="nav-item" href="tasks.html"><svg viewBox="0 0 24 24" fill="none"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>Tasks</a>
+    <a class="nav-item" href="reminders.html"><svg viewBox="0 0 24 24" fill="none"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>Reminders</a>
+    <div class="nav-section-label" style="margin-top:1rem;">Analytics</div>
+    <a class="nav-item" href="tracker.html"><svg viewBox="0 0 24 24" fill="none"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Tracker</a>
+    <a class="nav-item" href="focus.html"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Focus Mode</a>
+    <div class="nav-section-label" style="margin-top:1rem;">Account</div>
+    <a class="nav-item" href="profile.html"><svg viewBox="0 0 24 24" fill="none"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Profile</a>
+    <a class="nav-item" href="grades.html"><svg viewBox="0 0 24 24" fill="none"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Grades</a>
+    <a class="nav-item" href="schedule.html"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Schedule</a>
+    <a class="nav-item active" href="notifications.html"><svg viewBox="0 0 24 24" fill="none"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>Notifications</a>
+  </nav>
+  <div class="sidebar-bottom">
+    <div class="user-chip">
+      <div class="avatar" id="user-avatar">?</div>
+      <div class="user-info"><div class="user-name" id="user-name-display">Loading...</div><div class="user-role">Student</div></div>
+      <button class="logout-btn" onclick="doLogout()"><svg viewBox="0 0 24 24" fill="none"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button>
+    </div>
+  </div>
+</aside>
+
+<main class="main">
+  <div class="page-header">
+    <div class="page-title">Notifications</div>
+    <button class="btn-clear" onclick="clearAll()">Clear All</button>
+  </div>
+  <div id="notif-center">
+    <div class="empty">Loading notifications...</div>
+  </div>
+</main>
+
+<script type="module">
+  import { requireAuth } from './js/auth.js';
+  import './js/auth.js';
+  import { listenTasks } from './js/tasks.js';
+
+  const LS_READ    = 'studymate_notifs_read';
+  const LS_CLEARED = 'studymate_notifs_cleared';
+
+  let allNotifs = [];
+
+  requireAuth((user) => {
+    listenTasks(user.uid, (tasks) => {
+      allNotifs = generateNotifications(tasks);
+      render(allNotifs);
+    });
+  });
+
+  window.clearAll = () => {
+    const cleared = JSON.parse(localStorage.getItem(LS_CLEARED) || '[]');
+    allNotifs.forEach(n => { if (!cleared.includes(n.id)) cleared.push(n.id); });
+    localStorage.setItem(LS_CLEARED, JSON.stringify(cleared));
+    const readSet = JSON.parse(localStorage.getItem(LS_READ) || '[]');
+    allNotifs.forEach(n => { if (!readSet.includes(n.id)) readSet.push(n.id); });
+    localStorage.setItem(LS_READ, JSON.stringify(readSet));
+    document.getElementById('notif-center').innerHTML =
+      '<div class="empty">No notifications. You\'re all caught up! ✓</div>';
+  };
+
+  function generateNotifications(tasks) {
+    const now = new Date(); now.setHours(0,0,0,0);
+    const readSet    = new Set(JSON.parse(localStorage.getItem(LS_READ)    || '[]'));
+    const clearedSet = new Set(JSON.parse(localStorage.getItem(LS_CLEARED) || '[]'));
+    const notifs = [];
+
+    tasks.filter(t => !t.done).forEach(t => {
+      if (!t.due) return;
+      const due = new Date(t.due); due.setHours(0,0,0,0);
+      const diff = Math.round((due - now) / 86400000);
+      if (diff < -7 || diff > 7) return;
+
+      const id = `task_${t.id}`;
+      if (clearedSet.has(id)) return;
+
+      let desc = '', color = '', iconColor = '';
+      if (diff < 0) {
+        desc = `"${t.title}" is overdue by ${Math.abs(diff)} day${Math.abs(diff)>1?'s':''}!`;
+        color = 'rgba(239,68,68,0.12)'; iconColor = '#ef4444';
+      } else if (diff === 0) {
+        desc = `"${t.title}" is due TODAY!`;
+        color = 'rgba(245,158,11,0.12)'; iconColor = '#f59e0b';
+      } else if (diff <= 2) {
+        desc = `"${t.title}" is due in ${diff} day${diff>1?'s':''}`;
+        color = 'rgba(99,102,241,0.12)'; iconColor = '#6366f1';
+      } else {
+        desc = `"${t.title}" is coming up this week`;
+        color = 'rgba(34,197,94,0.08)'; iconColor = '#22c55e';
+      }
+
+      notifs.push({
+        id, title: t.subject || 'Task Reminder',
+        desc, color, iconColor,
+        time: due.toLocaleDateString('en-PH',{weekday:'short',month:'short',day:'numeric'}),
+        unread: !readSet.has(id), diff,
+      });
+    });
+
+    notifs.sort((a,b) => a.diff - b.diff);
+    return notifs;
+  }
+
+  function render(notifs) {
+    const el = document.getElementById('notif-center');
+    if (!notifs.length) {
+      el.innerHTML = '<div class="empty">No notifications. You\'re all caught up! ✓</div>';
+      return;
+    }
+
+    const overdue = notifs.filter(n => n.diff < 0);
+    const today   = notifs.filter(n => n.diff === 0);
+    const soon    = notifs.filter(n => n.diff > 0 && n.diff <= 2);
+    const week    = notifs.filter(n => n.diff > 2);
+
+    let html = '';
+    if (overdue.length) { html += '<div class="section-date">Overdue</div>' + overdue.map(notifCard).join(''); }
+    if (today.length)   { html += '<div class="section-date">Due Today</div>' + today.map(notifCard).join(''); }
+    if (soon.length)    { html += '<div class="section-date">Due Soon</div>' + soon.map(notifCard).join(''); }
+    if (week.length)    { html += '<div class="section-date">This Week</div>' + week.map(notifCard).join(''); }
+    el.innerHTML = html;
+
+    document.querySelectorAll('.notif-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const id = item.dataset.id;
+        const readSet = JSON.parse(localStorage.getItem(LS_READ) || '[]');
+        if (!readSet.includes(id)) { readSet.push(id); localStorage.setItem(LS_READ, JSON.stringify(readSet)); }
+        item.classList.remove('unread');
+        item.style.borderLeft = '1px solid var(--border)';
+      });
+    });
+  }
+
+  function notifCard(n) {
+    return `<div class="notif-item ${n.unread?'unread':''}" data-id="${n.id}">
+      <div class="notif-icon" style="background:${n.color};color:${n.iconColor}">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+      </div>
+      <div class="notif-body">
+        <div class="notif-title">${n.title}</div>
+        <div class="notif-desc">${n.desc}</div>
+        <div class="notif-time">${n.time}</div>
+      </div>
+    </div>`;
+  }
+</script>
+</body>
+</html>
