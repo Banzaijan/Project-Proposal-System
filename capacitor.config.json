@@ -1,0 +1,1 @@
+﻿{"appId":"com.mytracker.app","appName":"MyTracker","webDir":"www","android":{"backgroundColor":"#000000"},"plugins":{"SplashScreen":{"launchShowDuration":0,"launchAutoHide":true,"backgroundColor":"#000000","androidSplashResourceName":"splash","showSpinner":false,"splashFullScreen":true,"splashImmersive":true}}}
